@@ -26,6 +26,11 @@ var Scenarios = /** @class */ (function () {
             rect.commit(Infinity);
             new CTarget(rect);
         }
+        // let rect = Game.engine.makeRect();
+        // rect.setPos(500, 500);
+        // rect.setDims(40, 80);
+        // rect.commit(Infinity);
+        // new CTarget(rect);
         for (var y = 40; y < 720 - 40; y += 80) {
             var rect = Game.engine.makeRect();
             rect.setPos(Math.random() * (1200 - 40) + 40, y + 40);

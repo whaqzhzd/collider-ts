@@ -18,7 +18,7 @@ interface InteractTester {
 	 * @return True if collision/separation events should be generated
 	 * for this pair of HitBoxes.
 	 */
-	canInteract(a:HitBox, b:HitBox );
+	canInteract(a:HitBox, b:HitBox);
 	
 	/**
 	 * Determines which groups a given HitBox is allowed to interact with.

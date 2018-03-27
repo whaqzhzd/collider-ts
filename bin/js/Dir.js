@@ -17,9 +17,9 @@ var Dir = /** @class */ (function () {
     };
     Dir.x = function (dir) {
         switch (dir) {
-            case 0 /* R */:
+            case Dir.R /* R */:
                 return 1;
-            case 2 /* L */:
+            case Dir.L /* L */:
                 return -1;
             default:
                 return 0;
@@ -27,9 +27,9 @@ var Dir = /** @class */ (function () {
     };
     Dir.y = function (dir) {
         switch (dir) {
-            case 1 /* U */:
+            case Dir.U /* U */:
                 return 1;
-            case 3 /* D */:
+            case Dir.D /* D */:
                 return -1;
             default:
                 return 0;

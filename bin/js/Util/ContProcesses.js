@@ -2,7 +2,6 @@ var ContProcesses = /** @class */ (function () {
     function ContProcesses() {
         this.processes = new Array();
         this.time = 0.0;
-        this.i = 0;
     }
     ContProcesses.prototype.addProcess = function (process) {
         if (this.processes.indexOf(process) >= 0)
@@ -29,12 +28,7 @@ var ContProcesses = /** @class */ (function () {
         var processes = this.processes;
         if (newTime < this.time)
             throw new Error();
-        this.i = 0;
         while (true) {
-            this.i += 1;
-            if (this.i > 100) {
-                debugger;
-            }
             var minEvtTime = newTime;
             var minEvtTimeI = -1;
             for (var i = 0; i < processes.length; i++) {
@@ -50,9 +44,6 @@ var ContProcesses = /** @class */ (function () {
                 for (var j = 0; j < processes.length; j++) {
                     processes[j].stepToTime(minEvtTime);
                 }
-            }
-            if (this.time == minEvtTime) {
-                // debugger;
             }
             this.time = minEvtTime;
             if (minEvtTimeI < 0)

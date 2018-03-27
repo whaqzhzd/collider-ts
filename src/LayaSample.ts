@@ -37,16 +37,16 @@ class GameMain {
 
         Game.engine;
         Scenarios.makePoolBorder();
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 2; i++) {
             let x = 300; //Math.random() * (1280 - 200) + 400;//100 ;//+ Math.random() * (1280 - 2 * 56);
             let y = 300; //Math.random() * (720 - 200) + 300;//560;// + Math.random() * (720 - 2 * 56);
-            new CElastic(x, y, 40, 1000);
+            new CElastic(x, y, 40, 10000);
         }
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i <2; i++) {
             let x = 500; //Math.random() * (1280 - 200) + 400;//100 ;//+ Math.random() * (1280 - 2 * 56);
-            let y = 300; //Math.random() * (720 - 200) + 300;//560;// + Math.random() * (720 - 2 * 56);
-            new CElastic(x, y, 40, -1000);
+            let y = 500; //Math.random() * (720 - 200) + 300;//560;// + Math.random() * (720 - 2 * 56);
+            new CElastic(x, y, 40, -10000);
         }
 
         let a = 0;

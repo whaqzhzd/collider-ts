@@ -21,7 +21,7 @@ var HitBoxIter = /** @class */ (function () {
     };
     HitBoxIter.prototype.initCellIter = function () {
         var key = Field.getKey(this.boxIter.getX(), this.boxIter.getY(), this.groups[this.groupIndex]);
-        this.cellIter = this.field.data[key]; // &&  (this.field.data[key] instanceof Array) && this.field.data[key].slice(0);
+        this.cellIter = this.field.data[key];
     };
     HitBoxIter.prototype.searchNext = function () {
         while (true) {
@@ -55,8 +55,6 @@ var HitBoxIter = /** @class */ (function () {
         }
     };
     HitBoxIter.prototype.clear = function () {
-        // if (this.cellIter instanceof Array && this.cellIter.length > 0) debugger;
-        // this.cellIter && (this.cellIter.length = 0);
         this.cellIter = null;
         this.groups = null;
         this.groupIndex = 0;

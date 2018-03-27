@@ -90,9 +90,11 @@ class CollisionTester {
         return true;
     }
 
-    private static rectRectTime(a: HBRect, b: HBRect, startTime: number, endTime: number,forCollide: boolean): number {
+    private static rectRectTime(a: HBRect, b: HBRect, startTime: number, endTime: number, forCollide: boolean): number {
         let overlapStart = 0.0;
         let overlapEnd = 1.05 * (endTime - startTime);
+        
+        // let overlapEnd = endTime - startTime;
 
         for (let dir = 0; dir < 4; dir++) {
             let overlap = a.getEdgeComp(dir, startTime) + b.getEdgeComp(Dir.opp(dir), startTime);
@@ -130,7 +132,7 @@ class CollisionTester {
 
         let result = Arith.quadRootAscending(coeffA, coeffB, coeffC);
         if (result >= 0.0) return startTime + result;
-        else return Infinity; 
+        else return Infinity;
     }
 
     private rectCircCollideTime(a: HBRect, b: HBCircle, startTime: number, endTime: number): number {

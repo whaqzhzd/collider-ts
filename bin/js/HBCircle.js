@@ -11,7 +11,10 @@ var __extends = (this && this.__extends) || (function () {
 var HBCircle = /** @class */ (function (_super) {
     __extends(HBCircle, _super);
     function HBCircle(collider) {
-        return _super.call(this, collider) || this;
+        var _this = _super.call(this, collider) || this;
+        _this.startRad = 0;
+        _this.velRad = 0;
+        return _this;
     }
     HBCircle.prototype.init = function () {
         this.startRad = 0.0;

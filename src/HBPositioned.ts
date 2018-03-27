@@ -19,6 +19,9 @@ abstract class HBPositioned extends HitBox {
 
     public markTransitionStart() {
         let time = this.collider.getTime();
+        if(this.startTime - time >= 0.066){
+            debugger;
+        }
         this.startX = this.getX(time);
         this.startY = this.getY(time);
         super.markTransitionStart();

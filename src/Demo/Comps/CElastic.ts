@@ -8,7 +8,7 @@ class CElastic extends Component {
         circ.setDiam(diam);
         circ.setVel(2 * maxVel * (.5 - Math.random()), 2 * maxVel * (.5 - Math.random()));
 
-        // circ.setVel(maxVel, 0);
+        // circ.setVel(50, 49);
         circ.commit(Infinity);
     }
 

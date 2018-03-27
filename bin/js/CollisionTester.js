@@ -96,6 +96,7 @@ var CollisionTester = /** @class */ (function () {
     CollisionTester.rectRectTime = function (a, b, startTime, endTime, forCollide) {
         var overlapStart = 0.0;
         var overlapEnd = 1.05 * (endTime - startTime);
+        // let overlapEnd = endTime - startTime;
         for (var dir = 0; dir < 4; dir++) {
             var overlap = a.getEdgeComp(dir, startTime) + b.getEdgeComp(Dir.opp(dir), startTime);
             var overlapVel = a.getVelEdgeComp(dir) + b.getVelEdgeComp(Dir.opp(dir));

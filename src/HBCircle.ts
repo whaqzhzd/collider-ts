@@ -4,13 +4,15 @@ class HBCircle extends HBPositioned {
 
     public constructor(collider: Collider) {
         super(collider);
+
+        this.startRad = 0;
+        this.velRad = 0;
     }
 
     public init() {
         this.startRad = 0.0;
         this.velRad = 0.0;
         super.init();
-
     }
 
     public markTransitionStart() {

@@ -32,15 +32,15 @@ var GameMain = /** @class */ (function () {
         Laya.Stat.show();
         Game.engine;
         Scenarios.makePoolBorder();
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 2; i++) {
             var x = 300; //Math.random() * (1280 - 200) + 400;//100 ;//+ Math.random() * (1280 - 2 * 56);
             var y = 300; //Math.random() * (720 - 200) + 300;//560;// + Math.random() * (720 - 2 * 56);
-            new CElastic(x, y, 40, 1000);
+            new CElastic(x, y, 40, 10000);
         }
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 2; i++) {
             var x = 500; //Math.random() * (1280 - 200) + 400;//100 ;//+ Math.random() * (1280 - 2 * 56);
-            var y = 300; //Math.random() * (720 - 200) + 300;//560;// + Math.random() * (720 - 2 * 56);
-            new CElastic(x, y, 40, -1000);
+            var y = 500; //Math.random() * (720 - 200) + 300;//560;// + Math.random() * (720 - 2 * 56);
+            new CElastic(x, y, 40, -10000);
         }
         var a = 0;
         var b = -a;

@@ -1,7 +1,6 @@
 class ContProcesses {
     private processes: Array<ContProcess> = new Array<ContProcess>();
     private time: number = 0.0;
-    private i: number = 0;
 
     public constructor() { }
 
@@ -31,13 +30,8 @@ class ContProcesses {
     public stepToTime(newTime: number): void {
         let processes = this.processes;
         if (newTime < this.time) throw new Error();
-        this.i = 0;
 
         while (true) {
-            this.i += 1;
-            if(this.i > 100){
-                debugger;
-            }
             let minEvtTime = newTime;
             let minEvtTimeI = -1;
             for (let i = 0; i < processes.length; i++) {
@@ -52,9 +46,6 @@ class ContProcesses {
                 for (let j = 0; j < processes.length; j++) {
                     processes[j].stepToTime(minEvtTime);
                 }
-            }
-            if(this.time == minEvtTime){
-                // debugger;
             }
             this.time = minEvtTime;
             if (minEvtTimeI < 0) break;
