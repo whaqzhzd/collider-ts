@@ -103,7 +103,6 @@ class GameMain {
 
             if (normal.overlap < 1 && normal.overlap > -1) {
                 if (normal.x < 0) {
-                    //x方向锁定
                     if (speed.x < 0) speed.x = 0;
                 } else if (normal.x > 0) {
                     if (speed.x > 0) speed.x = 0;
@@ -114,6 +113,7 @@ class GameMain {
                 } else if (normal.y > 0) {
                     if (speed.y > 0) speed.y = 0;
                 }
+                
             } else {
                 overlaps.splice(index, 1);
             }

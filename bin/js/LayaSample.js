@@ -84,7 +84,6 @@ var GameMain = /** @class */ (function () {
             var normal = _this.player.hitBox.getNormal(e.hitBox);
             if (normal.overlap < 1 && normal.overlap > -1) {
                 if (normal.x < 0) {
-                    //x方向锁定
                     if (speed.x < 0)
                         speed.x = 0;
                 }

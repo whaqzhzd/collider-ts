@@ -31,22 +31,22 @@ var CSlide = /** @class */ (function (_super) {
         // let time = Game.engine.getTime();
         // if (this.stuckTime >= 0.0 && this.stuckTime < time) return;
         // if (this.stuckTime < 0.0) this.stuckTime = time;
-        var normal = this.hitBox.getNormal(other.hitBox);
-        console.log(normal);
-        console.log(this.hitBox.startX + (-normal.x * -normal.overlap), this.hitBox.startY + (-normal.y * -normal.overlap));
-        var x = this.hitBox.startX, y = this.hitBox.startY;
-        if (normal.x != 0) {
-            if (normal.overlap < 0) {
-                x = this.hitBox.startX + (-normal.x * -normal.overlap * 200);
-            }
-        }
-        if (normal.y != 0) {
-            if (normal.overlap < 0) {
-                y = this.hitBox.startY + (-normal.y * -normal.overlap * 200);
-            }
-        }
-        this.hitBox.setPos(x, y);
-        console.log(this.hitBox.startX, this.hitBox.startY);
+        // let normal = this.hitBox.getNormal(other.hitBox);
+        // // console.log(normal);
+        // // console.log(this.hitBox.startX + (-normal.x * - normal.overlap), this.hitBox.startY + (-normal.y * - normal.overlap));
+        // let x: number = this.hitBox.startX, y: number = this.hitBox.startY;
+        // if (normal.x != 0) {
+        //     if (normal.overlap < 0) {
+        //         x = this.hitBox.startX + (-normal.x * - normal.overlap * 200);
+        //     }
+        // }
+        // if (normal.y != 0) {
+        //     if (normal.overlap < 0) {
+        //         y = this.hitBox.startY + (-normal.y * - normal.overlap * 200);
+        //     }
+        // }
+        // this.hitBox.setPos(x, y);
+        // console.log(this.hitBox.startX, this.hitBox.startY);
         // this.overlaps.push(other);
         // this.hitBox.commit(Infinity);
         // if (this.stuckTime == time && this.hitBox.getOverlap(other.hitBox) > .1) {
@@ -64,7 +64,7 @@ var CSlide = /** @class */ (function (_super) {
         if (otherCE != null && this.getId() > otherCE.getId())
             return;
         var success = this.elasticCollision(other);
-        console.log("碰撞到了,要停下来");
+        // console.log("碰撞到了,要停下来")
         this.overlaps.push(other);
         this.overlaps1.push(other);
         if (otherCE != null)
@@ -108,7 +108,7 @@ var CSlide = /** @class */ (function (_super) {
         */
         this.hitBox.setVel(0, 0);
         this.hitBox.commit(Infinity);
-        console.log("onSeparatexxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        // console.log("onSeparatexxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     };
     CSlide.prototype.elasticCollision = function (other) {
         if (other instanceof CTarget) {

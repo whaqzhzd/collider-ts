@@ -25,6 +25,7 @@ var HBPositioned = /** @class */ (function (_super) {
         this.startX = this.getX(time);
         this.startY = this.getY(time);
         _super.prototype.markTransitionStart.call(this);
+        console.log("移动");
     };
     /**
      * Set the center x-coordinate.
