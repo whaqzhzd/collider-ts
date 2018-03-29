@@ -22,9 +22,6 @@ var HBPositioned = /** @class */ (function (_super) {
     };
     HBPositioned.prototype.markTransitionStart = function () {
         var time = this.collider.getTime();
-        if (this.startTime - time >= 0.066) {
-            debugger;
-        }
         this.startX = this.getX(time);
         this.startY = this.getY(time);
         _super.prototype.markTransitionStart.call(this);

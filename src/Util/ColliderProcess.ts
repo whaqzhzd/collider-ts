@@ -17,10 +17,12 @@ class ColliderProcess implements ContProcess {
     public peekNextEventTime(): number {
         return this.collider.peekNextEventTime();
     }
+    
     public stepToTime(time: number) {
         let evt = this.collider.stepToTime(time, false);
         if (evt != null) throw new Error();
     }
+
     public resolveEvent() {
         let time = this.collider.getTime();
         let evt = this.collider.stepToTime(time);

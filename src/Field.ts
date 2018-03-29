@@ -77,8 +77,9 @@ class Field {
         let key = Field.getKey(x, y, group);
         let oldSetObj = this.data[key];
         let res = ArrayUtil.add(oldSetObj, hitBox);
-        let newSetObj = res.arr;
         if (!res.flag) throw new Error();
+        let newSetObj = res.arr;
+
         if (newSetObj != oldSetObj) this.data[key] = newSetObj;
         this.numEntries++;
     }

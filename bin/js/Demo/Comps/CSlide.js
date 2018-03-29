@@ -9,43 +9,38 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 //碰撞反弹
-var CElastic = /** @class */ (function (_super) {
-    __extends(CElastic, _super);
-    function CElastic(x, y, diam, maxVel) {
+var CSlide = /** @class */ (function (_super) {
+    __extends(CSlide, _super);
+    function CSlide(x, y, diam, maxVel) {
         var _this = _super.call(this, Game.engine.makeCircle()) || this;
         _this.overlaps = new Array();
         _this.stuckTime = -1;
         var circ = _this.circ();
         circ.setPos(x, y);
         circ.setDiam(diam);
-        // circ.setVel(2 * maxVel * (.5 - Math.random()), 2 * maxVel * (.5 - Math.random()));
         circ.setVel(maxVel, maxVel);
         circ.commit(Infinity);
         return _this;
     }
-    CElastic.prototype.canInteract = function (other) {
+    CSlide.prototype.canInteract = function (other) {
         return other instanceof CElastic || other instanceof CTarget;
     };
-    CElastic.prototype.interactsWithBullets = function () { return false; };
-    CElastic.prototype.onCollide = function (other) {
-        // if (other instanceof CBounds) return;
+    CSlide.prototype.interactsWithBullets = function () { return false; };
+    CSlide.prototype.onCollide = function (other) {
         // let time = Game.engine.getTime();
-        // if (this.stuckTime >= 0.0 && this.stuckTime < time) {
-        //     console.log("return");
-        //     return;
-        // }
+        // if (this.stuckTime >= 0.0 && this.stuckTime < time) return;
         // if (this.stuckTime < 0.0) this.stuckTime = time;
-        // this.stuckTime = time;
-        // // this.elasticCollision(other);
-        // this.hitBox.setVel(0.0, 0.0);
-        // this.hitBox.commit(Infinity);
-        // if (this.stuckTime == time && this.hitBox.getOverlap(other.hitBox) < .5) {
+        // if (this.stuckTime == time && this.hitBox.getOverlap(other.hitBox) > .1) {
+        //     this.delete ();
+        // }
+        // else {
         //     this.hitBox.setVel(0.0, 0.0);
         //     this.hitBox.commit(Infinity);
+        //     this.stuckTime = -1;
         // }
-        // this.hitBox.getNormal(other.hitBox);
+        // if (other instanceof CTarget) (<CTarget>other).hit();
         var otherCE;
-        if (other instanceof CElastic)
+        if (other instanceof CSlide)
             otherCE = other;
         if (otherCE != null && this.getId() > otherCE.getId())
             return;
@@ -71,13 +66,31 @@ var CElastic = /** @class */ (function (_super) {
         }
         throw new Error("chained elastic collision not converging");
     };
-    CElastic.prototype.onSeparate = function (other) {
+    CSlide.prototype.onSeparate = function (other) {
         var index = this.overlaps.indexOf(other);
         if (index != -1) {
             this.overlaps.splice(index, 1);
         }
+        /*
+        for (let i = 0, length = this.overlaps.length; i < length; i++) {
+            let node = this.overlaps[i];
+            if (node != other) {
+                continue;
+            }
+            let normal = this.hitBox.getNormal(node.hitBox);
+            // if (normal.overlap == 0) normal.overlap = -0.5;
+
+            this.hitBox.setPos(this.hitBox.startX + (-normal.x * - normal.overlap * 20), this.hitBox.startY + (-normal.y * - normal.overlap * 20));
+
+            this.overlaps.splice(i, 1);
+            i--; length--;
+        }
+        */
+        this.hitBox.setVel(0, 0);
+        this.hitBox.commit(Infinity);
+        console.log("onSeparatexxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     };
-    CElastic.prototype.elasticCollision = function (other) {
+    CSlide.prototype.elasticCollision = function (other) {
         if (other instanceof CTarget) {
             var normal = other.hitBox.getNormal(this.hitBox);
             var success = this.elasticCollisionNum(normal.getUnitX(), normal.getUnitY(), 0, 0, Infinity);
@@ -85,7 +98,7 @@ var CElastic = /** @class */ (function (_super) {
                 (other.hit());
             return success;
         }
-        else if (other instanceof CElastic) {
+        else if (other instanceof CSlide) {
             var circA = this.circ();
             var circB = other.circ();
             var n = circB.getNormal(circA);
@@ -100,7 +113,7 @@ var CElastic = /** @class */ (function (_super) {
         }
         throw new Error();
     };
-    CElastic.prototype.elasticCollisionNum = function (nx, ny, v2x, v2y, m2) {
+    CSlide.prototype.elasticCollisionNum = function (nx, ny, v2x, v2y, m2) {
         var circ = this.circ();
         var m1 = Geom.area(circ);
         var v1x = circ.getVelX();
@@ -114,18 +127,11 @@ var CElastic = /** @class */ (function (_super) {
         else
             massRatio = m2 / (m1 + m2);
         var term = 2 * massRatio * normalRelVelComp;
-        // if (nx == 0 && ny != 0) {
-        //     circ.setVel(v1x + term * nx, 0);
-        // } else if (nx != 0 && ny == 0) {
-        //     circ.setVel(0, v1y + term * ny);
-        // } else {
-        //     circ.setVel(v1x + term * nx, v1y + term * ny);
-        // }
         circ.setVel(v1x + term * nx, v1y + term * ny);
         circ.commit(Infinity);
         return true;
     };
-    CElastic.prototype.collideIteration = function (visitedSet) {
+    CSlide.prototype.collideIteration = function (visitedSet) {
         visitedSet.push(this);
         var changed = 0;
         for (var i = 0, l = this.overlaps.length; i < l; i++) {
@@ -144,6 +150,6 @@ var CElastic = /** @class */ (function (_super) {
         }
         return changed == 1 ? true : false;
     };
-    return CElastic;
+    return CSlide;
 }(Component));
-//# sourceMappingURL=CElastic.js.map
+//# sourceMappingURL=CSlide.js.map

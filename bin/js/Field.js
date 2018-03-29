@@ -70,9 +70,9 @@ var Field = /** @class */ (function () {
         var key = Field.getKey(x, y, group);
         var oldSetObj = this.data[key];
         var res = ArrayUtil.add(oldSetObj, hitBox);
-        var newSetObj = res.arr;
         if (!res.flag)
             throw new Error();
+        var newSetObj = res.arr;
         if (newSetObj != oldSetObj)
             this.data[key] = newSetObj;
         this.numEntries++;

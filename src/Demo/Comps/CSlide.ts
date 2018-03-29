@@ -1,6 +1,6 @@
 
 //碰撞反弹
-class CElastic extends Component {
+class CSlide extends Component {
     private overlaps: Array<Component> = new Array<Component>();
     private stuckTime: number = -1;
 
@@ -9,8 +9,6 @@ class CElastic extends Component {
         let circ = this.circ();
         circ.setPos(x, y);
         circ.setDiam(diam);
-        // circ.setVel(2 * maxVel * (.5 - Math.random()), 2 * maxVel * (.5 - Math.random()));
-
         circ.setVel(maxVel, maxVel);
         circ.commit(Infinity);
     }
@@ -22,33 +20,29 @@ class CElastic extends Component {
     public interactsWithBullets(): boolean { return false; }
 
     public onCollide(other: Component) {
-        // if (other instanceof CBounds) return;
-        // let time = Game.engine.getTime();
-        // if (this.stuckTime >= 0.0 && this.stuckTime < time) {
-        //     console.log("return");
-        //     return;
-        // }
-        // if (this.stuckTime < 0.0) this.stuckTime = time;
-        // this.stuckTime = time;
-        // // this.elasticCollision(other);
-        // this.hitBox.setVel(0.0, 0.0);
-        // this.hitBox.commit(Infinity);
 
-        // if (this.stuckTime == time && this.hitBox.getOverlap(other.hitBox) < .5) {
+        // let time = Game.engine.getTime();
+        // if (this.stuckTime >= 0.0 && this.stuckTime < time) return;
+        // if (this.stuckTime < 0.0) this.stuckTime = time;
+        // if (this.stuckTime == time && this.hitBox.getOverlap(other.hitBox) > .1) {
+        //     this.delete ();
+        // }
+        // else {
         //     this.hitBox.setVel(0.0, 0.0);
         //     this.hitBox.commit(Infinity);
+        //     this.stuckTime = -1;
         // }
+        // if (other instanceof CTarget) (<CTarget>other).hit();
 
-        // this.hitBox.getNormal(other.hitBox);
-        
-        let otherCE: CElastic
-        if (other instanceof CElastic) otherCE = <CElastic>other;
+        let otherCE: CSlide
+        if (other instanceof CSlide) otherCE = <CSlide>other;
         if (otherCE != null && this.getId() > otherCE.getId()) return;
         let success = this.elasticCollision(other);
         console.log("碰撞到了,要停下来")
         this.overlaps.push(other);
         if (otherCE != null) otherCE.overlaps.push(this);
         if (!success) return;
+
         if (this.overlaps.length == 1 && (otherCE == null || otherCE.overlaps.length == 1)) return;
         let visitedSet = [];
         for (let i = 0; i < 100; i++) {
@@ -66,9 +60,30 @@ class CElastic extends Component {
 
     public onSeparate(other: Component) {
         let index = this.overlaps.indexOf(other);
-        if (index != -1) {
-            this.overlaps.splice(index, 1)
+
+        if(index != -1){
+                this.overlaps.splice(index, 1);
         }
+
+        /*
+        for (let i = 0, length = this.overlaps.length; i < length; i++) {
+            let node = this.overlaps[i];
+            if (node != other) {
+                continue;
+            }
+            let normal = this.hitBox.getNormal(node.hitBox);
+            // if (normal.overlap == 0) normal.overlap = -0.5;
+
+            this.hitBox.setPos(this.hitBox.startX + (-normal.x * - normal.overlap * 20), this.hitBox.startY + (-normal.y * - normal.overlap * 20));
+
+            this.overlaps.splice(i, 1);
+            i--; length--;
+        }
+        */
+
+        this.hitBox.setVel(0, 0);
+        this.hitBox.commit(Infinity);
+        console.log("onSeparatexxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     }
 
     private elasticCollision(other: Component): boolean {
@@ -79,7 +94,7 @@ class CElastic extends Component {
             if (success) ((<CTarget>other).hit());
             return success;
         }
-        else if (other instanceof CElastic) {
+        else if (other instanceof CSlide) {
             let circA = this.circ();
             let circB = other.circ();
             let n = circB.getNormal(circA);
@@ -89,7 +104,7 @@ class CElastic extends Component {
             let v2y = circB.getVelY();
             let result = this.elasticCollisionNum(
                 n.getUnitX(), n.getUnitY(), v2x, v2y, Geom.area(circB)) ? 1 : 0;
-            let r = (<CElastic>other).elasticCollisionNum(
+            let r = (<CSlide>other).elasticCollisionNum(
                 -n.getUnitX(), -n.getUnitY(), v1x, v1y, Geom.area(circA)) ? 1 : 0;
 
             result = result | r;
@@ -107,20 +122,15 @@ class CElastic extends Component {
 
         let normalRelVelComp = nx * (v2x - v1x) + ny * (v2y - v1y);
         if (normalRelVelComp <= 0.00001) return false;
+
         let massRatio;
         if (m2 == Infinity) massRatio = 1.0;
         else massRatio = m2 / (m1 + m2);
         let term = 2 * massRatio * normalRelVelComp;
 
-        // if (nx == 0 && ny != 0) {
-        //     circ.setVel(v1x + term * nx, 0);
-        // } else if (nx != 0 && ny == 0) {
-        //     circ.setVel(0, v1y + term * ny);
-        // } else {
-        //     circ.setVel(v1x + term * nx, v1y + term * ny);
-        // }
         circ.setVel(v1x + term * nx, v1y + term * ny);
         circ.commit(Infinity);
+
         return true;
     }
 

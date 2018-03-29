@@ -261,6 +261,7 @@ class Collider {
     private checkForCollision(a: HitBox, b: HitBox) {
         let collideTime = this.collisionTester.collideTime(a, b, this.time);
         if (collideTime < Infinity) {
+            console.log("碰撞到了")
             let event = this.collidePool.obtain();
             event.init(a, b, collideTime, true);
             this.queueFunc(event);

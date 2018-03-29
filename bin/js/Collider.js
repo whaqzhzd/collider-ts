@@ -262,6 +262,7 @@ var Collider = /** @class */ (function () {
     Collider.prototype.checkForCollision = function (a, b) {
         var collideTime = this.collisionTester.collideTime(a, b, this.time);
         if (collideTime < Infinity) {
+            console.log("碰撞到了");
             var event_1 = this.collidePool.obtain();
             event_1.init(a, b, collideTime, true);
             this.queueFunc(event_1);

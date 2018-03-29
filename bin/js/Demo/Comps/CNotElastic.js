@@ -8,10 +8,10 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-//碰撞反弹
-var CElastic = /** @class */ (function (_super) {
-    __extends(CElastic, _super);
-    function CElastic(x, y, diam, maxVel) {
+//碰撞停止
+var CNotElastic = /** @class */ (function (_super) {
+    __extends(CNotElastic, _super);
+    function CNotElastic(x, y, diam, maxVel) {
         var _this = _super.call(this, Game.engine.makeCircle()) || this;
         _this.overlaps = new Array();
         _this.stuckTime = -1;
@@ -23,29 +23,13 @@ var CElastic = /** @class */ (function (_super) {
         circ.commit(Infinity);
         return _this;
     }
-    CElastic.prototype.canInteract = function (other) {
+    CNotElastic.prototype.canInteract = function (other) {
         return other instanceof CElastic || other instanceof CTarget;
     };
-    CElastic.prototype.interactsWithBullets = function () { return false; };
-    CElastic.prototype.onCollide = function (other) {
-        // if (other instanceof CBounds) return;
-        // let time = Game.engine.getTime();
-        // if (this.stuckTime >= 0.0 && this.stuckTime < time) {
-        //     console.log("return");
-        //     return;
-        // }
-        // if (this.stuckTime < 0.0) this.stuckTime = time;
-        // this.stuckTime = time;
-        // // this.elasticCollision(other);
-        // this.hitBox.setVel(0.0, 0.0);
-        // this.hitBox.commit(Infinity);
-        // if (this.stuckTime == time && this.hitBox.getOverlap(other.hitBox) < .5) {
-        //     this.hitBox.setVel(0.0, 0.0);
-        //     this.hitBox.commit(Infinity);
-        // }
-        // this.hitBox.getNormal(other.hitBox);
+    CNotElastic.prototype.interactsWithBullets = function () { return false; };
+    CNotElastic.prototype.onCollide = function (other) {
         var otherCE;
-        if (other instanceof CElastic)
+        if (other instanceof CNotElastic)
             otherCE = other;
         if (otherCE != null && this.getId() > otherCE.getId())
             return;
@@ -71,13 +55,15 @@ var CElastic = /** @class */ (function (_super) {
         }
         throw new Error("chained elastic collision not converging");
     };
-    CElastic.prototype.onSeparate = function (other) {
+    CNotElastic.prototype.onSeparate = function (other) {
         var index = this.overlaps.indexOf(other);
         if (index != -1) {
             this.overlaps.splice(index, 1);
         }
+        this.hitBox.setVel(0.0, 0.0);
+        this.hitBox.commit(Infinity);
     };
-    CElastic.prototype.elasticCollision = function (other) {
+    CNotElastic.prototype.elasticCollision = function (other) {
         if (other instanceof CTarget) {
             var normal = other.hitBox.getNormal(this.hitBox);
             var success = this.elasticCollisionNum(normal.getUnitX(), normal.getUnitY(), 0, 0, Infinity);
@@ -85,7 +71,7 @@ var CElastic = /** @class */ (function (_super) {
                 (other.hit());
             return success;
         }
-        else if (other instanceof CElastic) {
+        else if (other instanceof CNotElastic) {
             var circA = this.circ();
             var circB = other.circ();
             var n = circB.getNormal(circA);
@@ -100,7 +86,7 @@ var CElastic = /** @class */ (function (_super) {
         }
         throw new Error();
     };
-    CElastic.prototype.elasticCollisionNum = function (nx, ny, v2x, v2y, m2) {
+    CNotElastic.prototype.elasticCollisionNum = function (nx, ny, v2x, v2y, m2) {
         var circ = this.circ();
         var m1 = Geom.area(circ);
         var v1x = circ.getVelX();
@@ -125,7 +111,7 @@ var CElastic = /** @class */ (function (_super) {
         circ.commit(Infinity);
         return true;
     };
-    CElastic.prototype.collideIteration = function (visitedSet) {
+    CNotElastic.prototype.collideIteration = function (visitedSet) {
         visitedSet.push(this);
         var changed = 0;
         for (var i = 0, l = this.overlaps.length; i < l; i++) {
@@ -144,6 +130,6 @@ var CElastic = /** @class */ (function (_super) {
         }
         return changed == 1 ? true : false;
     };
-    return CElastic;
+    return CNotElastic;
 }(Component));
-//# sourceMappingURL=CElastic.js.map
+//# sourceMappingURL=CNotElastic.js.map

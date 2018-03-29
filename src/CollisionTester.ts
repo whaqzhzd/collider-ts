@@ -15,7 +15,10 @@ class CollisionTester {
     public collideTime(a: HitBox, b: HitBox, startTime: number): number {
         let endTime = Arith.min(a.endTime, b.endTime);
         if (endTime <= startTime) return Infinity;
-        if (!CollisionTester.boundBoxTest(a, b, startTime, endTime)) return Infinity;
+        if (!CollisionTester.boundBoxTest(a, b, startTime, endTime)) {
+            console.log("没有碰撞到", a, b)
+            return Infinity;
+        }
         return this.getTime(a, b, startTime, endTime, true);
     }
 
@@ -85,7 +88,9 @@ class CollisionTester {
         for (let dir = 0; dir < 4; dir++) {
             let overlap = a.getBoundEdgeComp(dir, startTime, endTime)
                 + b.getBoundEdgeComp(Dir.opp(dir), startTime, endTime);
-            if (overlap <= 0.0) return false;
+            if (overlap <= 0.0) {
+                return false;
+            }
         }
         return true;
     }
@@ -93,8 +98,6 @@ class CollisionTester {
     private static rectRectTime(a: HBRect, b: HBRect, startTime: number, endTime: number, forCollide: boolean): number {
         let overlapStart = 0.0;
         let overlapEnd = 1.05 * (endTime - startTime);
-        
-        // let overlapEnd = endTime - startTime;
 
         for (let dir = 0; dir < 4; dir++) {
             let overlap = a.getEdgeComp(dir, startTime) + b.getEdgeComp(Dir.opp(dir), startTime);

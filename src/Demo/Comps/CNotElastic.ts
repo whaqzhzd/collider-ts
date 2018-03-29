@@ -1,6 +1,5 @@
-
-//碰撞反弹
-class CElastic extends Component {
+//碰撞停止
+class CNotElastic extends Component {
     private overlaps: Array<Component> = new Array<Component>();
     private stuckTime: number = -1;
 
@@ -22,27 +21,8 @@ class CElastic extends Component {
     public interactsWithBullets(): boolean { return false; }
 
     public onCollide(other: Component) {
-        // if (other instanceof CBounds) return;
-        // let time = Game.engine.getTime();
-        // if (this.stuckTime >= 0.0 && this.stuckTime < time) {
-        //     console.log("return");
-        //     return;
-        // }
-        // if (this.stuckTime < 0.0) this.stuckTime = time;
-        // this.stuckTime = time;
-        // // this.elasticCollision(other);
-        // this.hitBox.setVel(0.0, 0.0);
-        // this.hitBox.commit(Infinity);
-
-        // if (this.stuckTime == time && this.hitBox.getOverlap(other.hitBox) < .5) {
-        //     this.hitBox.setVel(0.0, 0.0);
-        //     this.hitBox.commit(Infinity);
-        // }
-
-        // this.hitBox.getNormal(other.hitBox);
-        
-        let otherCE: CElastic
-        if (other instanceof CElastic) otherCE = <CElastic>other;
+        let otherCE: CNotElastic
+        if (other instanceof CNotElastic) otherCE = <CNotElastic>other;
         if (otherCE != null && this.getId() > otherCE.getId()) return;
         let success = this.elasticCollision(other);
         console.log("碰撞到了,要停下来")
@@ -69,6 +49,9 @@ class CElastic extends Component {
         if (index != -1) {
             this.overlaps.splice(index, 1)
         }
+
+        this.hitBox.setVel(0.0, 0.0);
+        this.hitBox.commit(Infinity);
     }
 
     private elasticCollision(other: Component): boolean {
@@ -79,7 +62,7 @@ class CElastic extends Component {
             if (success) ((<CTarget>other).hit());
             return success;
         }
-        else if (other instanceof CElastic) {
+        else if (other instanceof CNotElastic) {
             let circA = this.circ();
             let circB = other.circ();
             let n = circB.getNormal(circA);
@@ -89,7 +72,7 @@ class CElastic extends Component {
             let v2y = circB.getVelY();
             let result = this.elasticCollisionNum(
                 n.getUnitX(), n.getUnitY(), v2x, v2y, Geom.area(circB)) ? 1 : 0;
-            let r = (<CElastic>other).elasticCollisionNum(
+            let r = (<CNotElastic>other).elasticCollisionNum(
                 -n.getUnitX(), -n.getUnitY(), v1x, v1y, Geom.area(circA)) ? 1 : 0;
 
             result = result | r;

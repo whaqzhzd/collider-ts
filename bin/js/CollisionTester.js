@@ -13,8 +13,10 @@ var CollisionTester = /** @class */ (function () {
         var endTime = Arith.min(a.endTime, b.endTime);
         if (endTime <= startTime)
             return Infinity;
-        if (!CollisionTester.boundBoxTest(a, b, startTime, endTime))
+        if (!CollisionTester.boundBoxTest(a, b, startTime, endTime)) {
+            console.log("没有碰撞到", a, b);
             return Infinity;
+        }
         return this.getTime(a, b, startTime, endTime, true);
     };
     CollisionTester.prototype.separateTime = function (a, b, startTime) {
@@ -88,15 +90,15 @@ var CollisionTester = /** @class */ (function () {
         for (var dir = 0; dir < 4; dir++) {
             var overlap = a.getBoundEdgeComp(dir, startTime, endTime)
                 + b.getBoundEdgeComp(Dir.opp(dir), startTime, endTime);
-            if (overlap <= 0.0)
+            if (overlap <= 0.0) {
                 return false;
+            }
         }
         return true;
     };
     CollisionTester.rectRectTime = function (a, b, startTime, endTime, forCollide) {
         var overlapStart = 0.0;
         var overlapEnd = 1.05 * (endTime - startTime);
-        // let overlapEnd = endTime - startTime;
         for (var dir = 0; dir < 4; dir++) {
             var overlap = a.getEdgeComp(dir, startTime) + b.getEdgeComp(Dir.opp(dir), startTime);
             var overlapVel = a.getVelEdgeComp(dir) + b.getVelEdgeComp(Dir.opp(dir));
