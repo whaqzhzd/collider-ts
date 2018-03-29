@@ -64,7 +64,7 @@ var HBPositioned = /** @class */ (function (_super) {
      * @param y Center y-coordinate.
      */
     HBPositioned.prototype.setPos = function (x, y) {
-        this.collider.altering(this);
+        // this.collider.altering(this);
         this.startX = x;
         this.startY = y;
     };

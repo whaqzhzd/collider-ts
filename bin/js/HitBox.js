@@ -13,6 +13,7 @@ var HitBox = /** @class */ (function () {
     };
     HitBox.prototype.markTransitionStart = function () {
         this.startTime = this.collider.getTime();
+        // console.log("更新时间",this)
         if (this.endTime < this.startTime) {
             throw new Error("updating HitBox late");
         }

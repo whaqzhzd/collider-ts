@@ -65,10 +65,13 @@ class Collider {
             evt = this.queue.first()) {
             this.queue.pollFirst();
             this.time = evt.time;
+            // console.log("设置新的collider时间",evt);
             evt.resolve(this);
             if (this.cEvent.isInitialized()) return this.cEvent;
             this.processCurHBAndCollision();
         }
+        
+        // console.log("设置新的collider时间",newTime);
         this.time = newTime;
         return null;
     }
@@ -129,7 +132,7 @@ class Collider {
         this.changeInteractivity = changeInteractivity;
         this.field.getIndexBounds(hitBox, this.oldBounds);
         this.oldGroup = hitBox.getGroup();
-        hitBox.markTransitionStart();
+        this.curHitBox.markTransitionStart();
     }
 
     public queueFunc(event: FunctionEventt) {

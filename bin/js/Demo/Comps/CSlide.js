@@ -14,6 +14,7 @@ var CSlide = /** @class */ (function (_super) {
     function CSlide(x, y, diam, maxVel) {
         var _this = _super.call(this, Game.engine.makeCircle()) || this;
         _this.overlaps = new Array();
+        _this.overlaps1 = new Array();
         _this.stuckTime = -1;
         var circ = _this.circ();
         circ.setPos(x, y);
@@ -30,6 +31,24 @@ var CSlide = /** @class */ (function (_super) {
         // let time = Game.engine.getTime();
         // if (this.stuckTime >= 0.0 && this.stuckTime < time) return;
         // if (this.stuckTime < 0.0) this.stuckTime = time;
+        var normal = this.hitBox.getNormal(other.hitBox);
+        console.log(normal);
+        console.log(this.hitBox.startX + (-normal.x * -normal.overlap), this.hitBox.startY + (-normal.y * -normal.overlap));
+        var x = this.hitBox.startX, y = this.hitBox.startY;
+        if (normal.x != 0) {
+            if (normal.overlap < 0) {
+                x = this.hitBox.startX + (-normal.x * -normal.overlap * 200);
+            }
+        }
+        if (normal.y != 0) {
+            if (normal.overlap < 0) {
+                y = this.hitBox.startY + (-normal.y * -normal.overlap * 200);
+            }
+        }
+        this.hitBox.setPos(x, y);
+        console.log(this.hitBox.startX, this.hitBox.startY);
+        // this.overlaps.push(other);
+        // this.hitBox.commit(Infinity);
         // if (this.stuckTime == time && this.hitBox.getOverlap(other.hitBox) > .1) {
         //     this.delete ();
         // }
@@ -47,6 +66,7 @@ var CSlide = /** @class */ (function (_super) {
         var success = this.elasticCollision(other);
         console.log("碰撞到了,要停下来");
         this.overlaps.push(other);
+        this.overlaps1.push(other);
         if (otherCE != null)
             otherCE.overlaps.push(this);
         if (!success)

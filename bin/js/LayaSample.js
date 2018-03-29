@@ -44,6 +44,7 @@ var GameMain = /** @class */ (function () {
         Laya.stage.on(Laya.Event.KEY_UP, this, this.onKeyUp);
     }
     GameMain.prototype.next = function () {
+        var _this = this;
         var w = this.keyMaps[Laya.Keyboard.W], a = this.keyMaps[Laya.Keyboard.A], s = this.keyMaps[Laya.Keyboard.S], d = this.keyMaps[Laya.Keyboard.D];
         var speeds = 200;
         var degree;
@@ -72,12 +73,38 @@ var GameMain = /** @class */ (function () {
             degree = 180;
         }
         else {
-            // this.player.hitBox.setVel(0, 0);
-            // this.player.hitBox.commit(Infinity);
+            this.player.hitBox.setVel(0, 0);
+            this.player.hitBox.commit(Infinity);
             return;
         }
         degree = GameMain.getAdjustRotation(degree - 90);
         var speed = GameMain.getSpeedByAngle(degree, speeds);
+        var overlaps = this.player.overlaps1;
+        overlaps.forEach(function (e, index) {
+            var normal = _this.player.hitBox.getNormal(e.hitBox);
+            if (normal.overlap < 1 && normal.overlap > -1) {
+                if (normal.x < 0) {
+                    //x方向锁定
+                    if (speed.x < 0)
+                        speed.x = 0;
+                }
+                else if (normal.x > 0) {
+                    if (speed.x > 0)
+                        speed.x = 0;
+                }
+                if (normal.y < 0) {
+                    if (speed.y < 0)
+                        speed.y = 0;
+                }
+                else if (normal.y > 0) {
+                    if (speed.y > 0)
+                        speed.y = 0;
+                }
+            }
+            else {
+                overlaps.splice(index, 1);
+            }
+        });
         this.player.hitBox.setVel(speed.x, speed.y);
         this.player.hitBox.commit(Infinity);
     };

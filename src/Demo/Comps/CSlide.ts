@@ -2,6 +2,7 @@
 //碰撞反弹
 class CSlide extends Component {
     private overlaps: Array<Component> = new Array<Component>();
+    public overlaps1: Array<Component> = new Array<Component>();
     private stuckTime: number = -1;
 
     public constructor(x: number, y: number, diam: number, maxVel: number) {
@@ -24,6 +25,30 @@ class CSlide extends Component {
         // let time = Game.engine.getTime();
         // if (this.stuckTime >= 0.0 && this.stuckTime < time) return;
         // if (this.stuckTime < 0.0) this.stuckTime = time;
+
+        let normal = this.hitBox.getNormal(other.hitBox);
+        console.log(normal);
+        console.log(this.hitBox.startX + (-normal.x * - normal.overlap), this.hitBox.startY + (-normal.y * - normal.overlap));
+
+        let x: number = this.hitBox.startX, y: number = this.hitBox.startY;
+        if (normal.x != 0) {
+            if (normal.overlap < 0) {
+                x = this.hitBox.startX + (-normal.x * - normal.overlap * 200);
+            }
+        }
+
+        if (normal.y != 0) {
+            if (normal.overlap < 0) {
+                y = this.hitBox.startY + (-normal.y * - normal.overlap * 200);
+            }
+        }
+
+        this.hitBox.setPos(x, y);
+        console.log(this.hitBox.startX, this.hitBox.startY);
+
+        // this.overlaps.push(other);
+        // this.hitBox.commit(Infinity);
+
         // if (this.stuckTime == time && this.hitBox.getOverlap(other.hitBox) > .1) {
         //     this.delete ();
         // }
@@ -34,12 +59,14 @@ class CSlide extends Component {
         // }
         // if (other instanceof CTarget) (<CTarget>other).hit();
 
+
         let otherCE: CSlide
         if (other instanceof CSlide) otherCE = <CSlide>other;
         if (otherCE != null && this.getId() > otherCE.getId()) return;
         let success = this.elasticCollision(other);
         console.log("碰撞到了,要停下来")
         this.overlaps.push(other);
+        this.overlaps1.push(other);
         if (otherCE != null) otherCE.overlaps.push(this);
         if (!success) return;
 
@@ -61,8 +88,8 @@ class CSlide extends Component {
     public onSeparate(other: Component) {
         let index = this.overlaps.indexOf(other);
 
-        if(index != -1){
-                this.overlaps.splice(index, 1);
+        if (index != -1) {
+            this.overlaps.splice(index, 1);
         }
 
         /*

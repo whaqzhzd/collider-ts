@@ -87,14 +87,38 @@ class GameMain {
         } else if (s) {
             degree = 180;
         } else {
-            // this.player.hitBox.setVel(0, 0);
-            // this.player.hitBox.commit(Infinity);
+            this.player.hitBox.setVel(0, 0);
+            this.player.hitBox.commit(Infinity);
             return;
         }
 
         degree = GameMain.getAdjustRotation(degree - 90);
         let speed = GameMain.getSpeedByAngle(degree, speeds);
-     
+
+        let overlaps = this.player.overlaps1;
+
+
+        overlaps.forEach((e, index) => {
+            let normal = this.player.hitBox.getNormal(e.hitBox);
+
+            if (normal.overlap < 1 && normal.overlap > -1) {
+                if (normal.x < 0) {
+                    //x方向锁定
+                    if (speed.x < 0) speed.x = 0;
+                } else if (normal.x > 0) {
+                    if (speed.x > 0) speed.x = 0;
+                }
+
+                if (normal.y < 0) {
+                    if (speed.y < 0) speed.y = 0;
+                } else if (normal.y > 0) {
+                    if (speed.y > 0) speed.y = 0;
+                }
+            } else {
+                overlaps.splice(index, 1);
+            }
+        });
+
         this.player.hitBox.setVel(speed.x, speed.y);
         this.player.hitBox.commit(Infinity);
     }

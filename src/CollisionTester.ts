@@ -16,7 +16,7 @@ class CollisionTester {
         let endTime = Arith.min(a.endTime, b.endTime);
         if (endTime <= startTime) return Infinity;
         if (!CollisionTester.boundBoxTest(a, b, startTime, endTime)) {
-            console.log("没有碰撞到", a, b)
+            // console.log("没有碰撞到", a, b)
             return Infinity;
         }
         return this.getTime(a, b, startTime, endTime, true);

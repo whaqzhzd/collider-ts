@@ -57,11 +57,13 @@ var Collider = /** @class */ (function () {
         for (var evt = this.queue.first(); evt != null && (inclusive ? evt.time <= newTime : evt.time < newTime); evt = this.queue.first()) {
             this.queue.pollFirst();
             this.time = evt.time;
+            // console.log("设置新的collider时间",evt);
             evt.resolve(this);
             if (this.cEvent.isInitialized())
                 return this.cEvent;
             this.processCurHBAndCollision();
         }
+        // console.log("设置新的collider时间",newTime);
         this.time = newTime;
         return null;
     };
@@ -122,7 +124,7 @@ var Collider = /** @class */ (function () {
         this.changeInteractivity = changeInteractivity;
         this.field.getIndexBounds(hitBox, this.oldBounds);
         this.oldGroup = hitBox.getGroup();
-        hitBox.markTransitionStart();
+        this.curHitBox.markTransitionStart();
     };
     Collider.prototype.queueFunc = function (event) {
         event.id = this.nextEventId;

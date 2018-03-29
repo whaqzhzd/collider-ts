@@ -66,7 +66,7 @@ abstract class HBPositioned extends HitBox {
 	 * @param y Center y-coordinate.
 	 */
     public setPos(x: number, y: number) {
-        this.collider.altering(this);
+        // this.collider.altering(this);
         this.startX = x;
         this.startY = y;
     }
